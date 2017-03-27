@@ -1,0 +1,8 @@
+{
+  "name": "yoko",
+  "version": "0.1.0",
+  "description": "Transform Sass, Markdown and Handlebars into static sites optimized for Github Pages.",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
