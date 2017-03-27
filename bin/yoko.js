@@ -3,30 +3,33 @@
 'use strict'
 
 // Import dependencies
-const cli = require('commander')
+const yoko = require('commander')
 
 // yoko -v, --version
-cli.version(require('../package').version)
+yoko.version(require('../package').version)
 
 // yoko new
-cli
-  .command('new')
+yoko
+  .command('new <path>')
   .alias('n')
   .description('Create a new site')
-  .action()
+  .action(path => {
+    // Get template files
+    // Generate a config file
+  })
 
 // yoko build
-cli
+yoko
   .command('build')
   .alias('b')
   .description('Build static files for your site')
   .action()
 
 // yoko preview
-cli
+yoko
   .command('preview')
   .alias('p')
   .description('Preview your site in the default browser')
   .action()
 
-cli.parse(process.argv)
+yoko.parse(process.argv)
