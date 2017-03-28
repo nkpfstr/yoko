@@ -1,0 +1,16 @@
+:root {
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $text-color;
+  background: $background-color;
+}
+
+a {
+  color: #666;
+  text-decoration: none;
+  transition: color 100ms ease;
+  &:hover {
+    color: $text-color;
+  }
+}
