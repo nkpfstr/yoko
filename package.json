@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "description": "Transform Sass, Markdown and Handlebars into static sites optimized for Github Pages.",
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "fs-extra": "^2.1.2",
+    "js-yaml": "^3.8.2",
+    "lloogg": "^0.1.1"
+  },
+  "bin": {
+    "yoko": "bin/yoko.js"
   }
 }
