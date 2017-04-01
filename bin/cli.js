@@ -5,7 +5,7 @@
 // Import dependencies
 const cli = require('commander')
 const log = require('lloogg')
-const yoko = require('./lib/yoko')
+const yoko = require('../lib/yoko')
 
 // yoko -v, --version
 cli.version(require('../package').version)
