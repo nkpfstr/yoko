@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "description": "Transform Sass, Markdown and Handlebars into static sites optimized for Github Pages.",
   "dependencies": {
+    "browser-sync": "^2.18.8",
     "commander": "^2.9.0",
     "fs-extra": "^2.1.2",
+    "handlebars": "^4.0.6",
     "js-yaml": "^3.8.2",
-    "lloogg": "^0.1.1"
+    "lloogg": "^0.1.1",
+    "metalsmith": "^2.3.0",
+    "metalsmith-layouts": "^1.8.0",
+    "metalsmith-markdown": "^0.2.1",
+    "metalsmith-permalinks": "^0.5.0",
+    "metalsmith-sass": "^1.4.0"
   },
   "bin": {
-    "yoko": "bin/yoko.js"
+    "yoko": "bin/cli.js"
   }
 }
