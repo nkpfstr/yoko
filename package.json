@@ -7,6 +7,7 @@
     "commander": "^2.9.0",
     "fs-extra": "^2.1.2",
     "handlebars": "^4.0.6",
+    "john-cname": "^0.1.0",
     "js-yaml": "^3.8.2",
     "lloogg": "^0.1.1",
     "metalsmith": "^2.3.0",
