@@ -1,6 +1,6 @@
 {
   "name": "yoko",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Transform Sass, Markdown and Handlebars into static sites optimized for Github Pages.",
   "dependencies": {
     "browser-sync": "^2.18.8",
