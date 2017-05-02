@@ -32,7 +32,7 @@ cli
   .alias('b')
   .description('Build static files for your site')
   .action(options => {
-    yoko.build('./config.yml', '.', 'docs')
+    yoko.build('.', 'docs')
   })
 
 // yoko preview
