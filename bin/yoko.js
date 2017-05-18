@@ -14,6 +14,5 @@ const yoko = require('commander')
 yoko
   .version(require('../package').version)
   .command('create <path> [theme]', 'Create a new Yoko site')
-  .command('build', 'Generate static files for your site')
-  .command('preview', 'Open a live preview of your site in the default browser')
+  .command('run', 'Generate static files & open a live preview')
   .parse(process.argv)
