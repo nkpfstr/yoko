@@ -9,7 +9,7 @@ const Figg = require('figg')
 const fs = require('fs-extra')
 const titleCase = require('title-case')
 
-// Command options
+// Command options & parsing
 yoko
   .option('-b, --blank', 'Use a theme that only includes the minimum required files')
   .parse(process.argv)
