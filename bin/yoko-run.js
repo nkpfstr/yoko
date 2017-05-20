@@ -43,6 +43,8 @@ function getOptions (options) {
 // Handlebars/Markdown -> HTML
 function buildContent () {
   metalsmith(cwd)
+    // Add site metadata
+    .metadata(settings.get('site'))
     // Target files in this directory
     .source('content')
     // Output static files in this directory
