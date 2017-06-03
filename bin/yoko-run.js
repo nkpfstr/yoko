@@ -17,7 +17,7 @@ const collections = require('metalsmith-collections')
 const permalinks = require('metalsmith-permalinks')
 const rss = require('metalsmith-feed')
 const sitemap = require('metalsmith-mapsite')
-const browserSync = require('browser-sync').create()
+const bs = require('browser-sync').create()
 
 // Initialize settings
 const settings = new Figg({
@@ -132,18 +132,22 @@ fs.pathExists(settings.file, (err, exists) => {
   })
 
   /* ----- JS ----- */
+  // TODO
+
   /* ----- IMAGES ----- */
+  // TODO
+
   /* ----- PREVIEW ----- */
 
   // Launch the preview server
-  browserSync.init({
+  bs.init({
     server: 'docs'
   })
 
   // Rebuild static files when source changes are detected
-  browserSync.watch(['templates/**/*.hbs', 'content/**/*.md']).on('change', buildContent)
-  browserSync.watch('assets/sass/**/*.scss').on('change', buildSass)
+  bs.watch(['./templates/**/*.hbs', './content/**/*.md']).on('change', buildContent)
+  bs.watch('./assets/sass/**/*.scss').on('change', buildSass)
 
   // Refresh the preview server when static files are rebuilt
-  browserSync.watch('docs/**/*').on('change', browserSync.reload)
+  bs.watch('docs/**/*').on('change', bs.reload)
 })
