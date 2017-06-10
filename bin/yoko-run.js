@@ -59,6 +59,7 @@ function buildContent () {
       directory: 'templates',
       partials: 'templates/partials'
     }))
+        default: 'default.hbs',
     // Build static files
     .build(err => {
       if (err) {
