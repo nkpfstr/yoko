@@ -110,10 +110,10 @@ fs.pathExists(settings.file, (err, exists) => {
     // Do not proceed without a content directory
     if (!exists) {
       return console.log('Skipped content build')
+    } else {
+      // Build Handlebars templates
+      buildContent()
     }
-
-    // Build Handlebars templates
-    buildContent()
   })
 
   /* ----- SASS ----- */
@@ -128,10 +128,10 @@ fs.pathExists(settings.file, (err, exists) => {
     // Do not proceed without a Sass directory
     if (!exists) {
       return console.log('Skipped Sass build')
+    } else {
+      // Build Sass files
+      buildSass()
     }
-
-    // Build Sass files
-    buildSass()
   })
 
   /* ----- JS ----- */
