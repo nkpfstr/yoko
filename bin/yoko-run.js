@@ -17,7 +17,7 @@ const collections = require('metalsmith-collections')
 const permalinks = require('metalsmith-permalinks')
 const rss = require('metalsmith-feed')
 const sitemap = require('metalsmith-mapsite')
-const bs = require('browser-sync').create()
+const preview = require('browser-sync').create()
 
 // Initialize settings
 const settings = new Figg({
@@ -64,6 +64,8 @@ function buildContent () {
       if (err) {
         return console.error(err)
       }
+
+      preview.reload()
     })
 }
 
@@ -73,6 +75,7 @@ function buildSass () {
     .pipe(sass(getOptions('sass')).on('error', sass.logError))
     .pipe(autoprefixer(getOptions('autoprefixer')))
     .pipe(gulp.dest(`${cwd}/docs/assets/css`))
+    .pipe(preview.stream())
 }
 
 /*
@@ -138,16 +141,15 @@ fs.pathExists(settings.file, (err, exists) => {
   // TODO
 
   /* ----- PREVIEW ----- */
-
-  // Launch the preview server
-  bs.init({
-    server: 'docs'
-  })
-
   // Rebuild static files when source changes are detected
-  bs.watch(['./templates/**/*.hbs', './content/**/*.md']).on('change', buildContent)
-  bs.watch('./assets/sass/**/*.scss').on('change', buildSass)
+  preview.watch(['./templates/**/*.hbs', './content/**/*.md']).on('change', buildContent)
+  preview.watch('./assets/sass/**/*.scss').on('change', buildSass)
 
   // Refresh the preview server when static files are rebuilt
-  bs.watch('docs/**/*').on('change', bs.reload)
+  preview.watch('*.html').on('change', preview.reload)
+
+  // Launch the preview server
+  preview.init({
+    server: 'docs'
+  })
 })
