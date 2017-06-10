@@ -49,6 +49,8 @@ function buildContent () {
     .source('content')
     // Output static files in this directory
     .destination('docs')
+    // Do not clean the destination directory on every build
+    .clean(false)
     // Render Markdown
     .use(markdown(getOptions('markdown')))
     // Configure permalinks
