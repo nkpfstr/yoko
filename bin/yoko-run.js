@@ -25,14 +25,13 @@ const settings = new Figg({
 })
 
 // Command options & parsing
-yoko
-  .parse(process.argv)
+yoko.parse(process.argv)
 
 // Easier way to reference the current working directory
 const cwd = process.cwd()
 
 // Get options for use in build tasks
-function getOptions (options) {
+function getOptions(options) {
   if (settings.has(options)) {
     return settings.get(options)
   } else {
@@ -41,7 +40,7 @@ function getOptions (options) {
 }
 
 // Handlebars/Markdown -> HTML
-function buildContent () {
+function buildContent() {
   metalsmith(cwd)
     // Add site metadata
     // Add site info to metadata
@@ -62,7 +61,14 @@ function buildContent () {
       directory: 'templates',
       partials: 'templates/partials'
     }))
+    .use(
+      layouts({
+        engine: 'handlebars',
         default: 'default.hbs',
+        directory: 'templates',
+        partials: 'templates/partials'
+      })
+    )
     // Build static files
     .build(err => {
       if (err) {
@@ -74,8 +80,9 @@ function buildContent () {
 }
 
 // Sass -> CSS
-function buildSass () {
-  return gulp.src(`${cwd}/assets/sass/**/*.scss`)
+function buildSass() {
+  return gulp
+    .src(`${cwd}/assets/sass/**/*.scss`)
     .pipe(sass(getOptions('sass')).on('error', sass.logError))
     .pipe(autoprefixer(getOptions('autoprefixer')))
     .pipe(gulp.dest(`${cwd}/docs/assets/css`))
@@ -97,7 +104,9 @@ fs.pathExists(settings.file, (err, exists) => {
   // Do not proceed without a Yoko file
   if (!exists) {
     console.error('Yoko site not found')
-    console.error('The build command must be run from the same directory as your Yoko site')
+    console.error(
+      'The build command must be run from the same directory as your Yoko site'
+    )
     return
   }
 
