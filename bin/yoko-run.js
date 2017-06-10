@@ -42,7 +42,6 @@ function getOptions(options) {
 // Handlebars/Markdown -> HTML
 function buildContent() {
   metalsmith(cwd)
-    // Add site metadata
     // Add site info to metadata
     .metadata(settings.get('site'))
     // Target files in this directory
@@ -56,11 +55,6 @@ function buildContent() {
     // Configure permalinks
     .use(permalinks(getOptions('permalinks')))
     // Apple Handlebars templates
-    .use(layouts({
-      engine: 'handlebars',
-      directory: 'templates',
-      partials: 'templates/partials'
-    }))
     .use(
       layouts({
         engine: 'handlebars',
