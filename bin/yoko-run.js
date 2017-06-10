@@ -44,6 +44,7 @@ function getOptions (options) {
 function buildContent () {
   metalsmith(cwd)
     // Add site metadata
+    // Add site info to metadata
     .metadata(settings.get('site'))
     // Target files in this directory
     .source('content')
