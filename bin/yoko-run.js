@@ -50,6 +50,8 @@ function buildContent() {
     .destination('docs')
     // Do not clean the destination directory on every build
     .clean(false)
+    // Group related content
+    .use(collections(getOptions('collections')))
     // Render Markdown
     .use(markdown(getOptions('markdown')))
     // Configure permalinks
