@@ -9,6 +9,8 @@ const fs = require('fs-extra')
 const gulp = require('gulp')
 const sass = require('gulp-sass')
 const autoprefixer = require('gulp-autoprefixer')
+const butternut = require('gulp-butternut')
+const concat = require('gulp-concat')
 const metalsmith = require('metalsmith')
 const markdown = require('metalsmith-markdown')
 const drafts = require('metalsmith-drafts')
@@ -89,10 +91,13 @@ function buildSass() {
     .pipe(preview.stream())
 }
 
-/*
-  NOTE: The build tasks are wrapped inside the function below to ensure
-  they only run if a Yoko file exists in the current working directory.
-*/
+function compileJS() {
+  return gulp
+    .src(`${cwd}/assets/js/**/*.js`)
+    .pipe(butternut())
+    .pipe(concat('scripts.js'))
+    .pipe(gulp.dest(`${cwd}/docs/assets/js`))
+}
 
 // Search for a Yoko file in the current working directory
 fs.pathExists(settings.file, (err, exists) => {
@@ -148,7 +153,19 @@ fs.pathExists(settings.file, (err, exists) => {
   })
 
   /* ----- JS ----- */
-  // TODO
+  fs.pathExists('assets/js', (err, exists) => {
+    if (err) {
+      return console.error(err)
+    }
+
+    // Don't try to compile unless there's a js directory
+    if (!exists) {
+      return console.log('JS build skipped')
+    } else {
+      compileJS()
+      console.log('JS compiled successfully')
+    }
+  })
 
   /* ----- IMAGES ----- */
   // TODO
@@ -158,6 +175,7 @@ fs.pathExists(settings.file, (err, exists) => {
     // Rebuild static files when source changes are detected
     preview.watch(['./templates/**/*.hbs', './content/**/*.md']).on('change', compileContent)
     preview.watch('./assets/sass/**/*.scss').on('change', compileSass)
+    preview.watch('./assets/js/**/*.js').on('change', compileJS)
 
     // Refresh the preview server when static files are rebuilt
     preview.watch('*.html').on('change', preview.reload)
