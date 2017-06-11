@@ -12,13 +12,11 @@ const titleCase = require('title-case')
 // Command options & parsing
 yoko
   .option('-b, --blank', 'Use a theme that only includes the minimum required files')
+  .option('-t, --theme [url]', 'Install an existing theme from Github, Gitlab or Bitbucket')
   .parse(process.argv)
 
 // <path> argument
 const yokoPath = yoko.args[0]
-
-// [theme] argument
-const yokoTheme = yoko.args[1]
 
 // Initialize settings
 const settings = new Figg({
@@ -67,19 +65,19 @@ const blankConfig = {
 }
 
 /* Check for the [theme] argument first */
-if (yokoTheme) {
-  const themeIsValid = /^(github|gitlab|bitbucket):\S*\/\S*$/.test(yokoTheme)
+if (yoko.theme) {
+  const themeIsValid = /^(github|gitlab|bitbucket):\S*\/\S*$/.test(yoko.theme)
 
   // Make sure the user is making a valid request using the format host:username/repository
   if (themeIsValid) {
-    const themeName = yokoTheme.replace(/[^/]*\//, '')
-    const themeHost = /[^:]*/.exec(yokoTheme)
+    const themeName = yoko.theme.replace(/[^/]*\//, '')
+    const themeHost = /[^:]*/.exec(yoko.theme)
 
     // Notify the user that we're attempting to download the requested theme
     console.log(`Downloading ${titleCase(themeName)} from ${titleCase(themeHost)}...`)
 
     // Download the requested theme to <path>
-    downloadTheme(yokoTheme, yokoPath, err => {
+    downloadTheme(yoko.theme, yokoPath, err => {
       if (err) {
         return console.error(err)
       } else {
@@ -89,7 +87,7 @@ if (yokoTheme) {
   } else {
     console.error('Invalid theme')
   }
-// Check for the --blank option
+  // Check for the --blank option
 } else if (yoko.blank) {
   // Use the blank theme
   fs.copy(`${__dirname}/../themes/blank`, yokoPath, err => {
@@ -103,7 +101,7 @@ if (yokoTheme) {
     settings.set(blankConfig)
     settings.save()
   })
-// No [theme] argument or --blank option supplied
+  // No [theme] argument or --blank option supplied
 } else {
   // Use the default theme
   fs.copy(`${__dirname}/../themes/kitsune`, yokoPath, err => {

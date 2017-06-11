@@ -13,6 +13,6 @@ const yoko = require('commander')
 */
 yoko
   .version(require('../package').version)
-  .command('create <path> [theme]', 'Create a new Yoko site')
+  .command('create <path>', 'Create a new Yoko site')
   .command('run', 'Generate static files & open a live preview')
   .parse(process.argv)
