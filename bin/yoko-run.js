@@ -25,7 +25,9 @@ const settings = new Figg({
 })
 
 // Command options & parsing
-yoko.parse(process.argv)
+yoko
+  .option('-n, --nopreview', 'Compile your site without launchg a live preview')
+  .parse(process.argv)
 
 // Easier way to reference the current working directory
 const cwd = process.cwd()
@@ -71,7 +73,9 @@ function buildContent() {
         return console.error(err)
       }
 
-      preview.reload()
+      if (!yoko.nopreview) {
+        preview.reload()
+      }
     })
 }
 
@@ -150,15 +154,17 @@ fs.pathExists(settings.file, (err, exists) => {
   // TODO
 
   /* ----- PREVIEW ----- */
-  // Rebuild static files when source changes are detected
-  preview.watch(['./templates/**/*.hbs', './content/**/*.md']).on('change', buildContent)
-  preview.watch('./assets/sass/**/*.scss').on('change', buildSass)
+  if (!yoko.nopreview) {
+    // Rebuild static files when source changes are detected
+    preview.watch(['./templates/**/*.hbs', './content/**/*.md']).on('change', compileContent)
+    preview.watch('./assets/sass/**/*.scss').on('change', compileSass)
 
-  // Refresh the preview server when static files are rebuilt
-  preview.watch('*.html').on('change', preview.reload)
+    // Refresh the preview server when static files are rebuilt
+    preview.watch('*.html').on('change', preview.reload)
 
-  // Launch the preview server
-  preview.init({
-    server: 'docs'
-  })
+    // Launch the preview server
+    preview.init({
+      server: 'docs'
+    })
+  }
 })
