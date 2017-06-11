@@ -44,7 +44,7 @@ function getOptions(options) {
 }
 
 // Handlebars/Markdown -> HTML
-function buildContent() {
+function compileContent() {
   metalsmith(cwd)
     // Add site info to metadata
     .metadata(settings.get('site'))
@@ -82,7 +82,7 @@ function buildContent() {
 }
 
 // Sass -> CSS
-function buildSass() {
+function compileSass() {
   return gulp
     .src(`${cwd}/assets/sass/**/*.scss`)
     .pipe(sass(getOptions('sass')).on('error', sass.logError))
@@ -109,9 +109,7 @@ fs.pathExists(settings.file, (err, exists) => {
   // Do not proceed without a Yoko file
   if (!exists) {
     console.error('Yoko site not found')
-    console.error(
-      'The build command must be run from the same directory as your Yoko site'
-    )
+    console.error('The build command must be run from the same directory as your Yoko site')
     return
   }
 
@@ -120,17 +118,16 @@ fs.pathExists(settings.file, (err, exists) => {
 
   /* ----- CONTENT ----- */
   fs.pathExists('content', (err, exists) => {
-    // Do not proceed with an error
     if (err) {
       return console.error(err)
     }
 
-    // Do not proceed without a content directory
+    // Don't try to compile unless there's a content directory
     if (!exists) {
-      return console.log('Skipped content build')
+      return console.log('Content build skipped')
     } else {
-      // Build Handlebars templates
-      buildContent()
+      compileContent()
+      console.log('Content compiled successfully')
     }
   })
 
@@ -138,17 +135,16 @@ fs.pathExists(settings.file, (err, exists) => {
 
   // Search for a Sass directory
   fs.pathExists('assets/sass', (err, exists) => {
-    // Do not proceed with an error
     if (err) {
       return console.error(err)
     }
 
-    // Do not proceed without a Sass directory
+    // Don't try to compile unless there's a sass directory
     if (!exists) {
-      return console.log('Skipped Sass build')
+      return console.log('Sass build skipped')
     } else {
-      // Build Sass files
-      buildSass()
+      compileSass()
+      console.log('Sass compiled successfully')
     }
   })
 
