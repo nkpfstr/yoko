@@ -11,6 +11,7 @@ const sass = require('gulp-sass')
 const autoprefixer = require('gulp-autoprefixer')
 const butternut = require('gulp-butternut')
 const concat = require('gulp-concat')
+const imagemin = require('gulp-imagemin')
 const metalsmith = require('metalsmith')
 const markdown = require('metalsmith-markdown')
 const drafts = require('metalsmith-drafts')
@@ -99,6 +100,13 @@ function compileJS() {
     .pipe(gulp.dest(`${cwd}/docs/assets/js`))
 }
 
+function optimizeImages() {
+  return gulp
+    .src(`${cwd}/assets/images/**/*`)
+    .pipe(imagemin({ verbose: true }))
+    .pipe(gulp.dest(`${cwd}/docs/assets/images`))
+}
+
 // Search for a Yoko file in the current working directory
 fs.pathExists(settings.file, (err, exists) => {
   // Do not proceed with an error
@@ -122,12 +130,11 @@ fs.pathExists(settings.file, (err, exists) => {
       return console.error(err)
     }
 
-    // Don't try to compile unless there's a content directory
+    // Skip if there's no content directory
     if (!exists) {
       return console.log('Content build skipped')
     } else {
       compileContent()
-      console.log('Content compiled successfully')
     }
   })
 
@@ -139,12 +146,11 @@ fs.pathExists(settings.file, (err, exists) => {
       return console.error(err)
     }
 
-    // Don't try to compile unless there's a sass directory
+    // Skip if there's no sass folder
     if (!exists) {
       return console.log('Sass build skipped')
     } else {
       compileSass()
-      console.log('Sass compiled successfully')
     }
   })
 
@@ -154,17 +160,27 @@ fs.pathExists(settings.file, (err, exists) => {
       return console.error(err)
     }
 
-    // Don't try to compile unless there's a js directory
+    // Skip if there's no js folder
     if (!exists) {
       return console.log('JS build skipped')
     } else {
       compileJS()
-      console.log('JS compiled successfully')
     }
   })
 
   /* ----- IMAGES ----- */
-  // TODO
+  fs.pathExists('assets/images', (err, exists) => {
+    if (err) {
+      return console.error(err)
+    }
+
+    // Skip if there's no images folder
+    if (!exists) {
+      return console.log('Image optimization skipped')
+    } else {
+      optimizeImages()
+    }
+  })
 
   /* ----- PREVIEW ----- */
   if (!yoko.nopreview) {
